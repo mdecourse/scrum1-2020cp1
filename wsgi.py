@@ -1,10 +1,20 @@
-from flask import Flask
+from flask import Flask, send_from_directory
+import os
+import sys
+import inspect
+
 app = Flask(__name__)
+
+# get the parent directory of the file
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir) 
+_curdir = os.path.join(os.getcwd(), parentdir)
 
 @app.route("/group")
 def group():
     output = ""
-    with open("2a_raw.txt") as fh:
+    with open(_curdir + "/downloads/2a_raw.txt") as fh:
         # 逐行讀出檔案資料, 並放入數列中
         lines = fh.readlines()
         # 設法用迴圈逐數列內容取出字串
@@ -32,9 +42,17 @@ def group():
                    output += groups[i] + " "
     return output
     
-@app.route("/seat")
-def hello():
-    return "Hello World!"
+@app.route("/")
+def index():
+    return "<a href='/group'>group</a>"
+
+@app.route('/downloads/<path:path>')
+def downloads(path):
+
+    """Send files in downloads directory
+    """
+
+    return send_from_directory(_curdir+"/downloads/", path)
     
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
