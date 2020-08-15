@@ -1,15 +1,6 @@
 from flask import Flask, send_from_directory
-import os
-import sys
-import inspect
 
 app = Flask(__name__)
-
-# get the parent directory of the file
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir) 
-_curdir = os.path.join(os.getcwd(), parentdir)
 
 @app.route("/group")
 def group():
@@ -44,7 +35,9 @@ def group():
     
 @app.route("/")
 def index():
-    return "<a href='/group'>group</a>"
+    return '''<a href='/group'>group</a><br />
+    <a href='/downloads/2a_raw.txt'>2a_raw.txt</a>
+    '''
 
 @app.route('/downloads/<path:path>')
 def downloads(path):
