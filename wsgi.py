@@ -14,7 +14,7 @@ _curdir = os.path.join(os.getcwd(), parentdir)
 @app.route("/group")
 def group():
     output = ""
-    with open(_curdir + "/downloads/2a_raw.txt") as fh:
+    with open(_curdir + "downloads/2a_raw.txt") as fh:
         # 逐行讀出檔案資料, 並放入數列中
         lines = fh.readlines()
         # 設法用迴圈逐數列內容取出字串
@@ -52,7 +52,7 @@ def downloads(path):
     """Send files in downloads directory
     """
 
-    return send_from_directory(_curdir+"/downloads/", path)
+    return send_from_directory(_curdir+"downloads/", path)
     
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
